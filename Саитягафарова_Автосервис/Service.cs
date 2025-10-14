@@ -31,7 +31,14 @@ namespace Саитягафарова_Автосервис
         {
             get
             {
-                return (int)(Discount * 100);
+                if (Discount != null)
+                    return (int)(Discount * 100);
+                else
+                    return 0;
+            }
+            set
+            {
+                this.Discount = value / 100.0;
             }
         }
 

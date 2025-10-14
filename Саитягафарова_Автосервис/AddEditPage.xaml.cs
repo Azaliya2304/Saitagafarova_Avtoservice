@@ -20,9 +20,43 @@ namespace Саитягафарова_Автосервис
     /// </summary>
     public partial class AddEditPage : Page
     {
-        public AddEditPage()
+        private Service _currentServise = new Service();
+        public AddEditPage(Service SelectedService)
         {
             InitializeComponent();
+            if (SelectedService != null)
+                _currentServise = SelectedService;
+            DataContext = _currentServise;
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder errors = new StringBuilder();
+            if (string.IsNullOrWhiteSpace(_currentServise.Title))
+                errors.AppendLine("Укажите название услуги");
+            if (_currentServise.Cost == 0)
+                errors.AppendLine("Укажите стоимость услуги");
+            if (_currentServise.DiscountIt < 0)
+                errors.AppendLine("Укажите скидку");
+            if (string.IsNullOrWhiteSpace(_currentServise.Duration))
+                errors.AppendLine("Укажите длительность услуги");
+            if(errors.Length > 0)
+            {
+                MessageBox.Show(errors.ToString());
+                return;
+            }
+            if (_currentServise.ID == 0)
+                СаитягафароваавтосервисEntities.GetContext().Service.Add(_currentServise);
+            try
+            {
+                СаитягафароваавтосервисEntities.GetContext().SaveChanges();
+                MessageBox.Show("информация сохранена");
+                Manager.MainFrame.GoBack();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
         }
     }
 }
