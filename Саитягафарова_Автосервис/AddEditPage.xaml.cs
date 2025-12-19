@@ -20,42 +20,90 @@ namespace Саитягафарова_Автосервис
     /// </summary>
     public partial class AddEditPage : Page
     {
-        private Service _currentServise = new Service();
+        private Service _currentService = new Service();
+        private bool _isEditing = false;
+
         public AddEditPage(Service SelectedService)
         {
             InitializeComponent();
+
             if (SelectedService != null)
-                _currentServise = SelectedService;
-            DataContext = _currentServise;
+            {
+                _currentService = SelectedService;
+                _isEditing = true; // Режим редактирования
+            }
+            else
+            {
+                _currentService = new Service();
+                _isEditing = false; // Режим добавления
+            }
+
+            DataContext = _currentService;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             StringBuilder errors = new StringBuilder();
-            if (string.IsNullOrWhiteSpace(_currentServise.Title))
+
+            if (string.IsNullOrWhiteSpace(_currentService.Title))
                 errors.AppendLine("Укажите название услуги");
-            if (_currentServise.Cost == 0)
+            if (_currentService.Cost == 0)
                 errors.AppendLine("Укажите стоимость услуги");
-            if (_currentServise.DiscountIt < 0)
-                errors.AppendLine("Укажите скидку");
-            if (string.IsNullOrWhiteSpace(_currentServise.Duration))
+
+            if (_currentService.Duration == 0)
                 errors.AppendLine("Укажите длительность услуги");
-            if(errors.Length > 0)
+
+            if (_currentService.Duration > 240 || _currentService.Duration < 0)
+                errors.AppendLine("Длительность не может быть больше 240 минут или меньше нуля");
+
+            if (_currentService.Discount < 0 || _currentService.Discount > 100)
+                errors.AppendLine("Укажите скидку от 0 до 100");
+
+            if (errors.Length > 0)
             {
                 MessageBox.Show(errors.ToString());
                 return;
             }
-            if (_currentServise.ID == 0)
-                СаитягафароваавтосервисEntities.GetContext().Service.Add(_currentServise);
+
+            // Проверка на дублирование названия услуги
+            if (!_isEditing) // Только при добавлении новой услуги
+            {
+                var existingService = СаитягафароваавтосервисEntities.GetContext().Service
+                    .FirstOrDefault(s => s.Title == _currentService.Title);
+
+                if (existingService != null)
+                {
+                    MessageBox.Show("Уже существует такая услуга");
+                    return;
+                }
+            }
+            else // При редактировании - проверяем, не занято ли название другой услугой
+            {
+                var existingService = СаитягафароваавтосервисEntities.GetContext().Service
+                    .FirstOrDefault(s => s.Title == _currentService.Title && s.ID != _currentService.ID);
+
+                if (existingService != null)
+                {
+                    MessageBox.Show("Уже существует другая услуга с таким названием");
+                    return;
+                }
+            }
+
+            // Сохранение изменений
+            if (_currentService.ID == 0) // Новая услуга
+            {
+                СаитягафароваавтосервисEntities.GetContext().Service.Add(_currentService);
+            }
+
             try
             {
                 СаитягафароваавтосервисEntities.GetContext().SaveChanges();
-                MessageBox.Show("информация сохранена");
+                MessageBox.Show("Информация сохранена");
                 Manager.MainFrame.GoBack();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message.ToString());
+                MessageBox.Show($"Ошибка при сохранении: {ex.Message}");
             }
         }
     }

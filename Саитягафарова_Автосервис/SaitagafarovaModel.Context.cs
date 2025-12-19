@@ -12,29 +12,29 @@ namespace Саитягафарова_Автосервис
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+
     public partial class СаитягафароваавтосервисEntities : DbContext
     {
         private static СаитягафароваавтосервисEntities _context;
         public static СаитягафароваавтосервисEntities GetContext()
         {
             if (_context == null)
-            
-               _context = new СаитягафароваавтосервисEntities();
 
-               return _context;
-            
+                _context = new СаитягафароваавтосервисEntities();
+
+            return _context;
+
         }
         public СаитягафароваавтосервисEntities()
             : base("name=СаитягафароваавтосервисEntities")
         {
         }
-    
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
         public virtual DbSet<Client> Client { get; set; }
         public virtual DbSet<ClientService> ClientService { get; set; }
         public virtual DbSet<DocumentByService> DocumentByService { get; set; }
@@ -48,3 +48,4 @@ namespace Саитягафарова_Автосервис
         public virtual DbSet<Tag> Tag { get; set; }
     }
 }
+

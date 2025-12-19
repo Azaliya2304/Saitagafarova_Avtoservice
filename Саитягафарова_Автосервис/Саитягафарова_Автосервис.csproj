@@ -117,6 +117,9 @@
     <Compile Include="ServicePhoto.cs">
       <DependentUpon>SaitagafarovaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SignUpPage.xaml.cs">
+      <DependentUpon>SignUpPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Tag.cs">
       <DependentUpon>SaitagafarovaModel.tt</DependentUpon>
     </Compile>
@@ -140,6 +143,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SignUpPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -159,6 +166,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="App.Config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -173,9 +181,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="hbc\service_logo.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -183,16 +188,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="hbc\picture.png" />
-    <Content Include="SaitagafarovaModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SaitagafarovaModel.Context.cs</LastGenOutput>
-      <DependentUpon>SaitagafarovaModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="SaitagafarovaModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SaitagafarovaModel.edmx</DependentUpon>
-      <LastGenOutput>SaitagafarovaModel.cs</LastGenOutput>
-    </Content>
     <Resource Include="Услуги автосервиса\diz.jpg" />
     <Resource Include="Услуги автосервиса\rulevoe-upravlenie-avtomobilya.jpg" />
     <Resource Include="Услуги автосервиса\transmission.jpg" />
@@ -213,6 +208,18 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SaitagafarovaModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SaitagafarovaModel.edmx</DependentUpon>
+      <LastGenOutput>SaitagafarovaModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="SaitagafarovaModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>SaitagafarovaModel.edmx</DependentUpon>
+      <LastGenOutput>SaitagafarovaModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
